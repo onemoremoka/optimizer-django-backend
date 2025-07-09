@@ -1,17 +1,17 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
+     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <title>Optimizador de Producción</title>
-    <style>
-        table { border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: center; }
-    </style>
 </head>
 <body>
     <h1>Subir archivo CSV para optimización</h1>
 
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+        <!-- protección contra ataques cross-site request -->
+        {% csrf_token %} 
         {{ form.as_p }}
         <button type="submit">Ejecutar Optimización</button>
     </form>

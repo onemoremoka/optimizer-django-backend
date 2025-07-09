@@ -1,0 +1,76 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 40px;
+}
+
+/* Formulario */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 500px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Tabla de resultados */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+}
+
+th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Mensajes de error */
+p[style*="color: red"] {
+    font-weight: bold;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border: 1px solid #ff9999;
+    border-radius: 5px;
+    max-width: 500px;
+}

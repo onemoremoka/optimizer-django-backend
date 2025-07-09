@@ -31,5 +31,5 @@ def optimize_view(request):
         form = UploadFileForm()
 
     context['form'] = form
-    return render(request, 'optimizer/optimizer.html', context)
+    return render(request, 'layouts/optimizer.html', context)
 
