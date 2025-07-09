@@ -25,6 +25,16 @@ class DataLoader:
         self._load_data()
         self._validate_columns()
         self._validate_datatypes()
+
+           # Validaciones
+        if self._data.empty:
+            raise ValueError("El archivo CSV está vacío.")
+
+        if (self._data[['Price_Product_A', 'Price_Product_B']] < 0).any().any():
+            raise ValueError("Los precios no pueden ser negativos.")
+
+        if (self._data[['Machine_1_Available_Hours', 'Machine_2_Available_Hours']] <= 0).any().any():
+            raise ValueError("Las horas disponibles deben ser mayores que cero.")
         return self.data
 
     def _load_data(self):

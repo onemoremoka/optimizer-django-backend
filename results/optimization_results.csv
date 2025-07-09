@@ -1,0 +1,2 @@
+Product_A,Product_B,Objective,M1_LHS,M1_RHS,M2_LHS,M2_RHS,Status,Termination
+2.0,4.0,520.0,7.0,8.0,10.0,10.0,ok,optimal

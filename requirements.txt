@@ -1,3 +1,5 @@
 django
 pandas
 pyomo
+matplotlib
+seaborn

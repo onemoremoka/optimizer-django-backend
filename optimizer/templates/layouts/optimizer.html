@@ -1,28 +1,55 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <meta charset="UTF-8">
     <title>Optimizador de Producción</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>Subir archivo CSV para optimización</h1>
+  <div class="container">
 
-    <form method="post" enctype="multipart/form-data">
-        <!-- protección contra ataques cross-site request -->
-        {% csrf_token %} 
-        {{ form.as_p }}
-        <button type="submit">Ejecutar Optimización</button>
-    </form>
+    <header>
+        <h1>Optimizador de Producción</h1>
+    </header>
 
-    {% if error %}
-        <p style="color: red;">Error: {{ error }}</p>
-    {% endif %}
+    <section>
+        <h2>Subir archivo CSV para optimización</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %} 
+            {{ form.as_p }}
+            <div class="button-wrapper">
+                <button type="submit">Ejecutar Optimización</button>
+            </div>
+        </form>
+
+        {% if error %}
+            <p class="error">Error: {{ error }}</p>
+        {% endif %}
+    </section>
 
     {% if results_html %}
-        <h2>Resultados</h2>
-        {{ results_html|safe }}
+    <section>
+        <h2>Resultado de la Última Consulta</h2>
+        <div class="table-wrapper">
+            {{ results_html|safe }}
+        </div>
+    </section>
     {% endif %}
+
+
+    {% if objective_plot %}
+    <section>
+        <h2>Visualización Histórica</h2>
+
+        <img src="data:image/png;base64,{{ objective_plot }}" alt="Plot Objetivo" />
+        <img src="data:image/png;base64,{{ product_plot }}" alt="Plot Productos" />
+        <img src="data:image/png;base64,{{ solver_time_plot }}" alt="Plot Solver Time" />
+    </section>
+    {% endif %}
+
+  </div> <!-- FIN container -->
 </body>
 </html>

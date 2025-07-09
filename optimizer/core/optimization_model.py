@@ -7,7 +7,7 @@ class OptimizationModel:
         self.model = pyo.ConcreteModel()
         self._results = None
 
-    def build_model_optimazer(self):
+    def build_model_optimizer(self):
 
         # parametros
         row = self.data.iloc[0]
@@ -37,9 +37,6 @@ class OptimizationModel:
         def machine_2_constraint(model):
             return model.T_A2 * model.x_A + model.T_B2 * model.x_B <= model.T_M2
         
-        def no_negative_constraint(model):
-            return model.x_A >= 0 and model.x_B >= 0
-        
         self.model.machine_1_constraint = pyo.Constraint(rule=machine_1_constraint)
         self.model.machine_2_constraint = pyo.Constraint(rule=machine_2_constraint)
 
@@ -63,12 +60,27 @@ class OptimizationModel:
         if pyo.value(c2.body) > pyo.value(c2.upper) + epsilon:
             raise ValueError("No se cumple la restricción de máquina 2")
 
-        # Guardar resultados
-        self._results = pd.DataFrame({
-            'Product_A': [round(self.model.x_A.value, 6)],
-            'Product_B': [round(self.model.x_B.value, 6)],
-            'Objective_Value': [round(pyo.value(self.model.objective), 6)],
-        })
+        # Guardar todos los resultados simulando "raw_format"
+        self._results = {
+            'variables': {
+                'Product_A': self.model.x_A.value,
+                'Product_B': self.model.x_B.value
+            },
+            'objective_value': pyo.value(self.model.objective),
+            'constraints': {
+                'machine_1': {
+                    'lhs': pyo.value(c1.body),
+                    'rhs': pyo.value(c1.upper)
+                },
+                'machine_2': {
+                    'lhs': pyo.value(c2.body),
+                    'rhs': pyo.value(c2.upper)
+                }
+            },
+            'solver_status': str(results.solver.status),
+            'termination_condition': str(results.solver.termination_condition),
+            'raw_solver_output': results
+        }
 
     @property
     def results(self) -> pd.DataFrame:

@@ -1,9 +1,8 @@
-### DEV Pipeline
+# DEV Pipeline
 
 Pipeline de creación y configuración del proyecto: 
 
 ```bash
-
 # creación entorno de trabajo
 pyenv local 3.10.14
 python3 -m venv .venv
@@ -19,4 +18,38 @@ python manage.py createsuperuser # creo un superusuario para poder acceder al ad
 
 # crear app
 python manage.py startapp core # creo la app core
- ```
+
+# una vez creada el modelo de datos se debe migrar con el manage.py
+python manage.py makemigrations optimizer
+python manage.py migrate
+
+```
+
+# Deployment
+```bash
+# esto para levantar unicamente el dockerfile del backend
+
+# construir la imagen
+docker build -t optimizer-backend .
+
+# (opcional) subir la imagen a dockerhub
+docker tag optimizer-backend **user**/optimizer-backend:latest
+
+ # creo una instancia del contenedor
+docker run --rm --name optimizer-backend -p 8000:8000 optimizer-backend
+
+# y esto para levantar todos los servicios
+docker-compose up --build
+```
+
+# Otros comandos utiles
+
+```bash
+# para eliminar los registros de la DB
+python manage.py shell
+
+# dentro del shell
+from optimizer.models import OptimizationResult
+OptimizationResult.objects.all().delete()
+```
+
