@@ -36,14 +36,13 @@ class DataLoader:
         if (self._data[['Machine_1_Available_Hours', 'Machine_2_Available_Hours']] <= 0).any().any():
             raise ValueError("Las horas disponibles deben ser mayores que cero.")
         return self.data
-
+    
     def _load_data(self):
         """Carga los datos desde el archivo especificado."""
         try:
             self._data = pd.read_csv(self.file_path)
-        except Exception as e:
-            raise ValueError(f"Error loading data from {self.file_path}: {e}")
-        
+        except Exception:
+            raise ValueError(f"Archivo inválido: asegúrate de que '{self.file_path}' sea un archivo CSV válido.")
 
     def _validate_columns(self):
         """Verifica que existan todas las columnas requeridas."""

@@ -63,8 +63,9 @@ def optimize_view(request):
 
     # Graficar (siempre se muestran)
     plots = PlotHandler()
-    context['objective_plot'] = plots.plot_objective_over_time()
-    context['product_plot'] = plots.plot_products()
-    context['solver_time_plot'] = plots.plot_solver_time()
+    if not plots.df.empty:
+        context['objective_plot'] = plots.plot_objective_over_time()
+        context['product_plot'] = plots.plot_products()
+        context['solver_time_plot'] = plots.plot_solver_time()
 
     return render(request, 'layouts/optimizer.html', context)

@@ -37,7 +37,9 @@ docker tag optimizer-backend **user**/optimizer-backend:latest
 
  # creo una instancia del contenedor
 docker run --rm --name optimizer-backend -p 8000:8000 optimizer-backend
+```
 
+```bash
 # y esto para levantar todos los servicios
 docker-compose up --build
 ```
@@ -54,13 +56,12 @@ OptimizationResult.objects.all().delete()
 ```
 
 ```bash
-# para prometheus
-curl -s https://grafana.com/api/dashboards/11074/revisions/1/download   -o deployments/grafana/docker_monitoring.
+# descargar templates para grafana
+curl -s https://grafana.com/api/dashboards/11074/revisions/1/download -o deployments/grafana/docker_monitoring.
 
-# para cadvisor
-curl -s https://grafana.com/api/dashboards/14282/revisions/1/download \
-  -o deployments/grafana/docker_monitoring.json
+curl -s https://grafana.com/api/dashboards/14282/revisions/1/download -o deployments/grafana/docker_monitoring.json
 
+# reemplazar variables de entorno en el template de grafana
 sed -i 's/\${DS_PROMETHEUS[^}]*/Prometheus/g' deployments/grafana/docker_monitoring.json
 ```
 

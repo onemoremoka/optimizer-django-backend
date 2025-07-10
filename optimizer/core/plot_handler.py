@@ -12,10 +12,18 @@ class PlotHandler:
     # por construccion esta clase toma el historial de consultas. No se pasa un dataframe de entrada.
     sns.set_theme(style="darkgrid", palette="deep", font_scale=0.9)
     def __init__(self):
-        # cargar todos los resultados de la base de datos
-        self.df = pd.DataFrame.from_records(
-            OptimizationResult.objects.all().values()
-        ).sort_values('timestamp')
+        try:
+            records = OptimizationResult.objects.all().values()
+            self.df = pd.DataFrame.from_records(records)
+
+            if not self.df.empty and 'timestamp' in self.df.columns:
+                self.df = self.df.sort_values('timestamp')
+            else:
+                print("No hay datos o la columna 'timestamp' no existe.")
+                self.df = pd.DataFrame()
+        except Exception as e:
+            print(f"Error loading data: {e}")
+            self.df = pd.DataFrame()
 
     def plot_objective_over_time(self):
         """Grafica el valor objetivo a lo largo de los experimentos."""
