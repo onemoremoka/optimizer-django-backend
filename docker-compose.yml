@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build: .
@@ -5,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - PYTHONDONTWRITEBYTECODE=1 # evitar crear archivos .pyc (bytecode compilados)
+      - PYTHONDONTWRITEBYTECODE=1
     env_file:
       - .env
 
@@ -20,7 +22,7 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'    
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
 
@@ -32,9 +34,14 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./deployments/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./deployments/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./deployments/grafana:/etc/grafana/provisioning/dashboards
     depends_on:
       - prometheus
 
+
+  # advisor para monitorear contenedores Docker
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -47,5 +54,14 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     privileged: true
+
+  # exportador de métricas del sistema
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    ports:
+      - "9100:9100"
+
 volumes:
   grafana-storage: {}

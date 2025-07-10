@@ -68,7 +68,9 @@ class HtmlResultsHandler(ResultsHandler):
 
         # se añade otra info disponible
         data['Time'] = self.results["raw_solver_output"]["Solver"][0]["Time"]
-        data['Error_rc'] = self.results["raw_solver_output"]["Solver"][0].get("Error_rc")
+
+        # lo saque
+        # data['Error_rc'] = self.results["raw_solver_output"]["Solver"][0].get("Error_rc")
 
         df = pd.DataFrame([data])
         return df.to_html(index=False, justify='center', classes=self.style)

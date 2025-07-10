@@ -1,4 +1,5 @@
 {% load static %}
+<!-- pagina estatica. Para no recargar todo se pueden usar templates con jinja2 -->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -6,50 +7,80 @@
     <meta charset="UTF-8">
     <title>Optimizador de Producción</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
 </head>
+
 <body>
-  <div class="container">
+  <div class="bubble-wrapper">
+    <div class="container">
 
-    <header>
-        <h1>Optimizador de Producción</h1>
-    </header>
+      <header>
+          <h1>Problema de Optimización Lineal</h1>
+      </header>
 
-    <section>
-        <h2>Subir archivo CSV para optimización</h2>
+      <section>
+        <h3>Resumen</h3>
+            <p class="description compact">
+            Esta interfaz recibe los parámetros de entrada para un problema de optimización que busca maximizar los ingresos diarios de una operación manufacturera. A partir de un archivo CSV con datos de producción y parámetros definidos por el usuario, el sistema determina la cantidad óptima de productos a fabricar, respetando las restricciones de tiempo disponibles en dos máquinas de trabajo.
+        </p>
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %} 
-            {{ form.as_p }}
-            <div class="button-wrapper">
-                <button type="submit">Ejecutar Optimización</button>
-            </div>
-        </form>
+    <div class="math-block">
+        $$
+        \begin{align*}
+        \text{Maximizar} \quad & Z = \sum_{i=1}^{n} p_i \cdot x_i \\
+        \text{sujeto a:} \quad & \sum_{i=1}^{n} a_{i1} \cdot x_i \leq T_1 \quad \text{(Máquina 1)} \\
+                                & \sum_{i=1}^{n} a_{i2} \cdot x_i \leq T_2 \quad \text{(Máquina 2)} \\
+                                & x_i \geq 0 \quad \forall i \in \{1, \dots, n\}
+        \end{align*}
+        $$
+    </div>
 
-        {% if error %}
-            <p class="error">Error: {{ error }}</p>
-        {% endif %}
+        <ul class="definition-list">
+            <li><strong>\( Z \)</strong>: ingreso total diario a maximizar.</li>
+            <li><strong>\( x_i \)</strong>: cantidad a producir del producto \( i \).</li>
+            <li><strong>\( p_i \)</strong>: ingreso por unidad del producto \( i \).</li>
+            <li><strong>\( a_{i1} \)</strong>: tiempo que el producto \( i \) requiere en la máquina 1.</li>
+            <li><strong>\( a_{i2} \)</strong>: tiempo que el producto \( i \) requiere en la máquina 2.</li>
+            <li><strong>\( T_1 \)</strong>: tiempo disponible en la máquina 1 por día.</li>
+            <li><strong>\( T_2 \)</strong>: tiempo disponible en la máquina 2 por día.</li>
+            <li><strong>\( n \)</strong>: número total de productos posibles a fabricar.</li>
+        </ul>
     </section>
 
-    {% if results_html %}
-    <section>
-        <h2>Resultado de la Última Consulta</h2>
-        <div class="table-wrapper">
-            {{ results_html|safe }}
-        </div>
-    </section>
-    {% endif %}
+      <section>
+          <h3>Ejecutar Optimización</h3>
+          <form method="post" enctype="multipart/form-data">
+              {% csrf_token %} 
+              {{ form.as_p }}
+              <div class="button-wrapper">
+                  <button type="submit">Ejecutar Optimización</button>
+              </div>
+          </form>
 
+          {% if error %}
+              <p class="error">Error: {{ error }}</p>
+          {% endif %}
+      </section>
 
-    {% if objective_plot %}
-    <section>
-        <h2>Visualización Histórica</h2>
+      {% if results_html %}
+          <div class="table-wrapper">
+              {{ results_html|safe }}
+          </div>
+      {% endif %}
 
-        <img src="data:image/png;base64,{{ objective_plot }}" alt="Plot Objetivo" />
-        <img src="data:image/png;base64,{{ product_plot }}" alt="Plot Productos" />
-        <img src="data:image/png;base64,{{ solver_time_plot }}" alt="Plot Solver Time" />
-    </section>
-    {% endif %}
+      {% if objective_plot %}
+      <section>
+          <h3>Visualización Histórica</h3>
+          <img src="data:image/png;base64,{{ objective_plot }}" alt="Plot Objetivo" />
+          <img src="data:image/png;base64,{{ product_plot }}" alt="Plot Productos" />
+          <img src="data:image/png;base64,{{ solver_time_plot }}" alt="Plot Solver Time" />
+      </section>
+      {% endif %}
 
-  </div> <!-- FIN container -->
+    </div>
+  </div> 
 </body>
 </html>

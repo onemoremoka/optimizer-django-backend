@@ -20,5 +20,5 @@ from optimizer.views import optimize_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', optimize_view, name='optimizer'),
+    path('', optimize_view, name='optimize'),
 ]

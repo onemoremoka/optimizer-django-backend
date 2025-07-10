@@ -21,12 +21,12 @@ class OptimizationModel:
         self.model.T_M2 = pyo.Param(initialize=row['Machine_2_Available_Hours'])
 
         # variables de decision
-        self.model.x_A = pyo.Var(domain=pyo.NonNegativeIntegers) # esto indica la restriccion de no negatividad
-        self.model.x_B = pyo.Var(domain=pyo.NonNegativeIntegers) # esto indica la restriccion de no negatividad
+        self.model.x_A = pyo.Var(domain=pyo.NonNegativeIntegers) # restriccion de no negatividad implicita en la definicion de la variable
+        self.model.x_B = pyo.Var(domain=pyo.NonNegativeIntegers) # restriccion de no negatividad implicita en la definicion de la variable
 
         # funcion objetivo
         def objective(model):
-            return model.P_A * model.x_A + model.P_B * model.x_B # Por lo datos: 100 * x_A + 80 * x_B
+            return model.P_A * model.x_A + model.P_B * model.x_B # Por lo datos seria100 * x_A + 80 * x_B
 
         self.model.objective = pyo.Objective(rule=objective, sense=pyo.maximize)
 
@@ -83,7 +83,7 @@ class OptimizationModel:
         }
 
     @property
-    def results(self) -> pd.DataFrame:
+    def results(self) -> dict:
         """Acceso controlado a los resultados de la optimización."""
         if self._results is None:
             raise ValueError("Aun no se han calculado los resultados.")

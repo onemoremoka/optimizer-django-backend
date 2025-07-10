@@ -19,3 +19,5 @@ class OptimizationResult(models.Model):
 
     def __str__(self):
         return f"Result at {self.timestamp}"
+    
+    # feat: plot views and data model

@@ -53,3 +53,14 @@ from optimizer.models import OptimizationResult
 OptimizationResult.objects.all().delete()
 ```
 
+```bash
+# para prometheus
+curl -s https://grafana.com/api/dashboards/11074/revisions/1/download   -o deployments/grafana/docker_monitoring.
+
+# para cadvisor
+curl -s https://grafana.com/api/dashboards/14282/revisions/1/download \
+  -o deployments/grafana/docker_monitoring.json
+
+sed -i 's/\${DS_PROMETHEUS[^}]*/Prometheus/g' deployments/grafana/docker_monitoring.json
+```
+

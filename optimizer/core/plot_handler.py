@@ -18,16 +18,19 @@ class PlotHandler:
         ).sort_values('timestamp')
 
     def plot_objective_over_time(self):
+        """Grafica el valor objetivo a lo largo de los experimentos."""
         # el eje x es un contador que refleja el numero del experimento
         plt.figure(figsize=(8, 4))
         sns.lineplot(data=self.df, x='id', y='objective_value', marker='o')
         plt.ylim(0 - (self.df['objective_value'].max() * 0.1), self.df['objective_value'].max() * 1.1)
+        plt.xticks(self.df['id'][::5]-1) if len(self.df) > 5 else plt.xticks(self.df['id'])
         plt.title('Valor Objetivo Experimentos')
         plt.xlabel('Número de Experimento')
         plt.ylabel('Valor Objetivo')
         return self._get_image_base64()
 
     def plot_products(self):
+        """Grafica la producción optimizada de cada producto a lo largo de los experimentos."""
         plt.figure(figsize=(8, 4))
         sns.lineplot(data=self.df, x='id', y='product_a', label='Product A', marker='o')
         sns.lineplot(data=self.df, x='id', y='product_b', label='Product B', marker='s')
@@ -36,16 +39,18 @@ class PlotHandler:
         plt.xlabel('Número de Experimento')
         
         # x label: 5:10:15
-        plt.xticks(self.df['id'][::5]-1)
+        plt.xticks(self.df['id'][::5]-1) if len(self.df) > 5 else plt.xticks(self.df['id'])
         plt.ylabel('Cantidad')
         plt.legend()
         return self._get_image_base64()
 
     def plot_solver_time(self):
+        """Grafica el tiempo de resolución del solver a lo largo de los experimentos."""
         plt.figure(figsize=(8, 4))
         sns.lineplot(data=self.df, x='id', y='solve_time', marker='o', color='orange')
         plt.ylim(0 - (self.df['solve_time'].max() * 0.1), self.df['solve_time'].max() * 1.1)
-        plt.xticks(self.df['id'][::5]-1)
+        plt.xticks(self.df['id'][::5]-1) if len(self.df) > 5 else plt.xticks(self.df['id'])
+
         plt.title('Tiempo de Resolución del Solver')
         plt.xlabel('Número de Experimento')
         plt.ylabel('Tiempo (s)')
